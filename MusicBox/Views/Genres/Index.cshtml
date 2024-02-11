@@ -1,0 +1,43 @@
+﻿@model IEnumerable<MusicBox.Models.Genres>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Жанры</h1>
+
+<div id="buttons" style="margin-left:540px">
+
+    <a asp-controller="Genres"  asp-action="Create">Добавить жанр</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                    <a asp-action="Details" id="buttons" asp-route-id="@item.Id">Детали</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" id="buttons" asp-route-id="@item.Id">Изменить</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" id="buttons" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            
+
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,66 @@
+﻿@model MusicBox.Models.Songs
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Удалить</h1>
+
+<h3>Вы точно хотите это удалить?</h3>
+<div>
+   
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.singer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.singer)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.runtime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.runtime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.size)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.size)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.file)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.file)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pic)    
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Datetime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Datetime)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" id="buttons" class="btn btn-danger" /> 
+        <div id="buttons">
+            <a asp-action="Index">Вернуться в Плей-лист</a>
+        </div>
+    </form>
+</div>

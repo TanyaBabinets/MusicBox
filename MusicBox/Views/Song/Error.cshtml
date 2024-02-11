@@ -1,0 +1,22 @@
+﻿﻿
+@model string;
+
+@{
+    //ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@Model</h2>
+<h1>OOPS!!!</h1>
+
+<h3>Такая песня уже есть у нас!</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Error">
+        </form>
+    </div>
+</div>
+
+<div id="buttons">
+    <a asp-action="Index" style="margin-left:2px">Назад</a>
+</div>

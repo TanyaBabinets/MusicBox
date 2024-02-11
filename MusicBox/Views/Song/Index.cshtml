@@ -1,0 +1,205 @@
+﻿@model IEnumerable<MusicBox.Models.Songs>
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="total">
+
+<section id="login">
+	 <div class="left">
+				
+
+@if (Model != null)
+{
+	@if (Context.Session.GetString("Id") != null)
+
+	{
+		<div>
+			<div class="button">
+				<a asp-controller="Song" asp-action="Create" id="buttons" style="background:purple" margin-right">Добавить песню</a>
+			</div>
+			</div>
+	}
+	else
+
+	{
+		<h4>
+			Чтобы добавить песню, пожалуйста,</h4>
+					<h3>
+						<a asp-controller="Account" 
+			style="font-size:26px" margin="10px" asp-action="Login" class="grey" style="color:grey font-size:42px text-align:center">войдите</a>
+		</h3> <h4>или</h4> <h3>
+						<a asp-controller="Account" style="font-size:42p color:grey text-align:center" class="grey" asp-action="Register">зарегистрируйтесь</a>
+		</h3>
+	}
+}
+
+
+			@if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+			{
+				<div class="button">
+					<a asp-controller="Song" asp-action="IndexAdmin" id="buttons" style="background:purple">АДМИН</a>
+				</div>
+				<div class="button">
+					<a asp-controller="Genres" id="buttons" style="background:purple" asp-action="Index">ЖАНРЫ</a>
+				</div>
+			}
+</div>
+
+</section>
+
+
+ <section class="main">
+
+@foreach (var item in Model)
+
+	{
+		<div class="song-container">
+		<div class="picture-container">
+			<a asp-action="Detailes" enctype="multipart/form-data" asp-route-id="@item.Id">
+				<img class="picture" src="@Html.DisplayFor(modelItem => item.pic)">
+			</a>
+		</div>
+			<div class="song-details">
+				<ul>
+					<li>
+						<a asp-action="Details" enctype="multipart/form-data" asp-route-id="@item.Id" style="color:black">
+							<h4>@Html.DisplayFor(modelItem => item.name)</h4>
+						</a>
+					</li>
+					<li>
+						<a asp-action="" asp-route-id="@item.Id" style="color:black">
+							<h4>@Html.DisplayFor(modelItem => item.singer)</h4>
+						</a>
+					</li>
+					<li>
+						<div class="audio">
+							<audio controls src="@Html.DisplayFor(modelItem => item.file)"></audio>
+							
+						</div>
+					</li>
+					<li>
+						<div>
+							
+								<p>Длительность: @Html.DisplayFor(modelItem => item.runtime)</p>
+						</div>
+					</li>
+						<li>
+							<div>
+								
+								<p>Жанр: @Html.DisplayFor(modelItem => item.genre.name)</p>
+							</div>
+						</li>
+
+
+				</ul>
+				
+			
+			</div>
+				<div class="button-box">
+					<div id="buttons">
+
+						<a asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+					</div>
+				</div>
+		</div>
+		<hr />
+	}
+	
+</section>
+
+			</ul>
+		</div>			
+	<hr />
+	<hr />
+</section>
+</section>
+<hr />
+			
+
+
+
+
+
+
+
+
+
+
+
+
+	@* <p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.singer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.runtime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.size)
+            </th>
+            <th>
+                <a asp-action="" asp-route-id="@model.Id">
+                    <img src="@Html.DisplayFor(modelItem => model.pic)" />
+                </a>
+                </div>
+
+                <div>
+                    <audio controls src="@Html.DisplayFor(modelItem => item.file)"></audio>
+                    <a href="/mp3/Must.mp3"> Download audio </a>
+                </div>
+
+                @Html.DisplayNameFor(model => model.file)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datetime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.singer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.runtime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.file)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datetime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ *@

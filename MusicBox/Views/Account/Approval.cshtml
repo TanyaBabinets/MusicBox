@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MusicBox.Models.Users>
+
+@{
+	ViewBag.Title = "Approval";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+	<h1>Одобри пользователей</h1>
+
+<div class="button">
+	<a asp-controller="Song" asp-action="IndexAdmin" id="buttons" style="margin-left:520px; margin-top:30px">АДМИН</a>
+</div>
+<div class="button">
+	<a asp-controller="Song" asp-action="Index" id="buttons" style="margin-bottom:50px; margin-left:520px">PLAY LIST</a>
+</div>
+@if (Model != null)
+{
+	@if (Context.Session.GetString("Id") != null)
+
+	{
+		<table class="table justify-content-evenly">
+
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.FirstName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.LastName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Login)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.IsActivated)
+					</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var user in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(model => user.FirstName)
+						</td>
+						<td>
+							@Html.DisplayFor(model => user.LastName)
+						</td>
+						<td>
+							@Html.DisplayFor(model => user.Login)
+						</td>
+						<td>
+							@Html.DisplayFor(model => user.IsActivated)
+						</td>
+						<td>
+							<a asp-controller="Account" style="color:grey" asp-action="ApproveUser" asp-route-userId="@user.Id">Одобрить</a>
+						
+						</td>
+					</tr>
+				}
+						
+			</tbody>
+		</table>
+
+	}
+	
+
+
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,151 @@
+﻿@model MusicBox.Models.Songs
+
+@{
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Добавить песню</h1>
+<div id="buttons">
+	<a asp-action="Index">Вернуться в Плей-лист</a>
+</div>
+
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Create" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="name" class="labels" class="control-label"></label>
+				<input asp-for="name" class="form-control" />
+				<span asp-validation-for="name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="singer" class="labels" class="control-label"></label>
+				<input asp-for="singer" class="form-control" />
+				<span asp-validation-for="singer" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="runtime" class="labels" class="control-label"></label>
+				<input asp-for="runtime" class="form-control" />
+				<span asp-validation-for="runtime" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="size" class="labels" class="control-label"></label>
+				<input asp-for="size" input type="number" class="form-control" />
+				<span asp-validation-for="size" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="file" class="labels" class="control-label"></label>
+				<img id="FileCreate" />
+				<div id="FileFile">
+
+					<input value="" input asp-for="file" input type="file" name="uploadedHref" id="AddFile" class="form-control" accept="audio/mpeg, .mp3" />
+
+					<span asp-validation-for="file" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="pic" class="labels" class="control-label"></label>
+				<img id="PosterCreate" />
+				<div id="PosterFile">
+					<input value="" input asp-for="pic" input type="file" name="uploadedPreview" id="AddPoster" class="form-control" accept=".jpeg, .jpg" />
+
+					<span asp-validation-for="pic" class="text-danger"></span>
+				</div>
+
+
+				<div class="form-group">
+					<label asp-for="Datetime" class="labels" class="control-label"></label>
+					<input asp-for="Datetime" class="form-control" />
+					<span asp-validation-for="Datetime" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					
+					<input type="hidden" asp-for="user" class="form-control" />
+					
+				</div>
+
+				<div class="form-group">
+					<label asp-for="genre" class="control-label"></label>
+					<select asp-for="genre" class="form-control" asp-items="ViewBag.GenreId" name="GenreId"></select>
+					<span asp-validation-for="genre" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+
+					<input type="submit" value="Добавить" id="buttons" class="buttons" />
+				</div>
+		</form>
+	</div>
+</div>
+
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
+
+
+
+
+
+
+@* <div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="singer" class="control-label"></label>
+                <input asp-for="singer" class="form-control" />
+                <span asp-validation-for="singer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="runtime" class="control-label"></label>
+                <input asp-for="runtime" class="form-control" />
+                <span asp-validation-for="runtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="size" class="control-label"></label>
+                <input asp-for="size" class="form-control" />
+                <span asp-validation-for="size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="file" class="control-label"></label>
+                <input asp-for="file" class="form-control" />
+                <span asp-validation-for="file" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pic" class="control-label"></label>
+                <input asp-for="pic" class="form-control" />
+                <span asp-validation-for="pic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datetime" class="control-label"></label>
+                <input asp-for="Datetime" class="form-control" />
+                <span asp-validation-for="Datetime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} *@
