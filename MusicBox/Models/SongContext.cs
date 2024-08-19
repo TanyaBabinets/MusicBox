@@ -146,23 +146,7 @@ namespace MusicBox.Models
     }
 }
         
-		//private readonly SongContext _context;
-
-		//public SongContext(SongContext dbContext)
-		//{
-		//	_context = dbContext;
-		//}
-		//public async Task<IEnumerable<Users>> ToListAsync()
-		//	{
-				
-		//		var users = await _context.users.ToListAsync();			
-		//		return users;
-		//	}
 		
-
-      
-  //  }
-
 
 
 

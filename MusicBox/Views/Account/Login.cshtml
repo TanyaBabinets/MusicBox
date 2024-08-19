@@ -1,27 +1,30 @@
 ﻿@model MusicBox.Models.LoginModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = Resources.Resource.Enter;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // ViewBag.Title = "Login";
+  
 }
-<h1>Вход</h1>
+<h1>@Resources.Resource.Enter</h1>
 <hr />
 <div class="row login">
     <div class="col-md-4">
         <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Login" class="control-label"></label>
+                <label asp-for="Login" class="control-label">@Resources.Resource.Login</label>
                 <input asp-for="Login" class="form-control" />
                 <span asp-validation-for="Login" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
+                <label asp-for="Password" class="control-label">@Resources.Resource.Password</label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="button">
-                <button type="submit" id="buttons">Войти</button>
+                <button type="submit" id="buttons">@Resources.Resource.Enter</button>
             </div>
         </form>
     </div>

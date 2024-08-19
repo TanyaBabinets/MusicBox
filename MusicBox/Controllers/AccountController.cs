@@ -4,26 +4,37 @@ using MusicBox.Models;
 using MusicBox.Repository;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Generic;  
-using System.Linq;  
+using MusicBox.Filters;
+using MusicBox.Services;
 
 
 namespace MusicBox.Controllers
 {
-    public class AccountController : Controller
+	[Culture]
+	public class AccountController : Controller
     {
 
         private readonly IRepository<Users> repo;
+		private readonly SongContext _context;
 
-        public AccountController(IRepository<Users> r)
-        {
-            repo = r;
-        }
+		readonly ILangRead _langRead;
+
+		public AccountController(SongContext context, ILangRead langRead, IRepository<Users> r)
+		{
+			_context = context;
+			_langRead = langRead;
+			repo = r;
+		}
+
+		//public AccountController(IRepository<Users> r)
+  //      {
+  //          repo = r;
+  //      }
 
 		public ActionResult Login()
         {
-
-            return View();
+			HttpContext.Session.SetString("path", Request.Path);
+			return View();
         }
     
                 [HttpPost]
@@ -31,14 +42,11 @@ namespace MusicBox.Controllers
         public async Task<IActionResult> Login(LoginModel log)
         {
             var userList = await repo.ToList();
-            var checkUser = userList.Where(e => e.Login == log.Login).FirstOrDefault();
-
-		
+            var checkUser = userList.Where(e => e.Login == log.Login).FirstOrDefault();		
 			if (checkUser == null)
             {
 				ModelState.AddModelError("", "Такого пользователя нет");
 					return View(log);
-
 			}
 
 			if (ModelState.IsValid)
@@ -90,8 +98,9 @@ namespace MusicBox.Controllers
         }
 
         public IActionResult Register()
-        {
-            return View();
+		{
+			HttpContext.Session.SetString("path", Request.Path);
+			return View();
         }
 
         [HttpPost]
@@ -149,6 +158,7 @@ namespace MusicBox.Controllers
 
         public IActionResult Create()
         {
+            HttpContext.Session.SetString("path", Request.Path);
             return View();
         }
 
@@ -199,7 +209,25 @@ namespace MusicBox.Controllers
 			return View("Approval", usersToApprove);
 			
         }
-    }
+
+
+		public ActionResult ChangeCulture(string lang)
+		{
+			string? returnUrl = HttpContext.Session.GetString("path") ?? "/Song/Index";
+
+			// Список культур
+			List<string> cultures = new List<string>() { "ru", "en", "uk", "es" };
+			if (!cultures.Contains(lang))
+			{
+				lang = "ru";
+			}
+
+			CookieOptions option = new CookieOptions();
+			option.Expires = DateTime.Now.AddDays(10); // срок хранения куки - 10 дней
+			Response.Cookies.Append("lang", lang, option); // создание куки
+			return Redirect(returnUrl);
+		}
+	}
 
 
 }

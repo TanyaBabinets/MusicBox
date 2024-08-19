@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Microsoft.EntityFrameworkCore;
+using MusicBox.Filters;
 using MusicBox.Models;
 using MusicBox.Repository;
+using MusicBox.Services;
 
 namespace MusicBox.Controllers
 {
-    public class GenresController : Controller
+	[Culture]
+	public class GenresController : Controller
     {
         private readonly IRepository<Songs> repoS;
         private readonly IRepository<Users> repoU;
@@ -23,11 +26,19 @@ namespace MusicBox.Controllers
             repoG = rg;
             _appEnvironment = appEnvironment;
         }
+
         private readonly SongContext _context;
 
+		readonly ILangRead _langRead;
+
+		public GenresController(SongContext context, ILangRead langRead)
+		{
+			_context = context;
+			_langRead = langRead;
+		}
 
 
-        public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index()
         {
             var genres = await repoG.ToList();
             //ViewBag.GenresList = new SelectList(genres, "Id","Name");
@@ -170,7 +181,29 @@ namespace MusicBox.Controllers
         {
             return _context.genres.Any(e => e.Id == id);
         }
-    }
+        /// <summary>
+        /// //////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+		public ActionResult ChangeCulture(string lang)
+		{
+			string? returnUrl = HttpContext.Session.GetString("path") ?? "/Song/Index";
+
+			// Список культур
+			List<string> cultures = new List<string>() { "ru", "en", "uk", "es" };
+			if (!cultures.Contains(lang))
+			{
+				lang = "ru";
+			}
+
+			CookieOptions option = new CookieOptions();
+			option.Expires = DateTime.Now.AddDays(10); // срок хранения куки - 10 дней
+			Response.Cookies.Append("lang", lang, option); // создание куки
+			return Redirect(returnUrl);
+		}
+
+	}
 }
 
 

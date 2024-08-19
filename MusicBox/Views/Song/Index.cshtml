@@ -2,7 +2,9 @@
 @{
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = @Resources.Resource.SongList;
 }
+
 
 <section class="total">
 
@@ -24,13 +26,14 @@
 	else
 
 	{
-		<h4>
-			Чтобы добавить песню, пожалуйста,</h4>
+					<h4>
+						@Resources.Resource.Please
+			</h4>
 					<h3>
-						<a asp-controller="Account" 
-			style="font-size:26px" margin="10px" asp-action="Login" class="grey" style="color:grey font-size:42px text-align:center">войдите</a>
-		</h3> <h4>или</h4> <h3>
-						<a asp-controller="Account" style="font-size:42p color:grey text-align:center" class="grey" asp-action="Register">зарегистрируйтесь</a>
+						<a asp-controller="Account"
+						   style="font-size:26px" margin="10px" asp-action="Login" class="grey" style="color:grey font-size:42px text-align:center">@Resources.Resource.log_in</a>
+					</h3> <h4>@Resources.Resource.or</h4> <h3>
+						<a asp-controller="Account" style="font-size:42p color:grey text-align:center" class="grey" asp-action="Register">@Resources.Resource.reg</a>
 		</h3>
 	}
 }
@@ -51,6 +54,23 @@
 
 
  <section class="main">
+
+		<thead>
+			<tr>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">
+						Singer
+					</a>
+				</th>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewBag.SongSort">
+						Song
+					</a>
+				</th>
+			</tr>
+		</thead>
+		
+
 
 @foreach (var item in Model)
 
@@ -81,14 +101,14 @@
 					</li>
 					<li>
 						<div>
-							
-								<p>Длительность: @Html.DisplayFor(modelItem => item.runtime)</p>
+
+								<p>@Resources.Resource.Runtime: @Html.DisplayFor(modelItem => item.runtime)</p>
 						</div>
 					</li>
 						<li>
 							<div>
-								
-								<p>Жанр: @Html.DisplayFor(modelItem => item.genre.name)</p>
+
+								<p>@Resources.Resource.Genre: @Html.DisplayFor(modelItem => item.genre.name)</p>
 							</div>
 						</li>
 
@@ -100,7 +120,7 @@
 				<div class="button-box">
 					<div id="buttons">
 
-						<a asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+						<a asp-action="Details" asp-route-id="@item.Id">@Resources.Resource.Detailes</a>
 					</div>
 				</div>
 		</div>
@@ -109,7 +129,6 @@
 	
 </section>
 
-			</ul>
 		</div>			
 	<hr />
 	<hr />
@@ -127,79 +146,3 @@
 
 
 
-
-
-	@* <p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.singer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.runtime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.size)
-            </th>
-            <th>
-                <a asp-action="" asp-route-id="@model.Id">
-                    <img src="@Html.DisplayFor(modelItem => model.pic)" />
-                </a>
-                </div>
-
-                <div>
-                    <audio controls src="@Html.DisplayFor(modelItem => item.file)"></audio>
-                    <a href="/mp3/Must.mp3"> Download audio </a>
-                </div>
-
-                @Html.DisplayNameFor(model => model.file)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.pic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Datetime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.singer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.runtime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.size)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.file)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Datetime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@

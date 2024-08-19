@@ -1,36 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicBox.Models;
 using MusicBox.Repository;
-using System.Linq;
-using System.IO;
+using MusicBox.Filters;
+using System.Text;
+using Microsoft.AspNetCore.Mvc.Filters;
+using MusicBox.Services;
 
 namespace MusicBox.Controllers
 {
-    public class SongController : Controller
+	[Culture]
+	public class SongController : Controller
     {
         private readonly IRepository<Songs> repoS;
         private readonly IRepository<Users> repoU;
         private readonly IRepository<Genres> repoG;
         IWebHostEnvironment _appEnvironment;
+		
 
-        public SongController(IRepository<Songs> rs, IRepository<Users> ru, IRepository<Genres> rg, IWebHostEnvironment appEnvironment)
+		readonly ILangRead _langRead;
+
+		//public SongController(SongContext context, ILangRead langRead)
+		//{
+		//	_context = context;
+		//	_langRead = langRead;
+		//}
+
+		public SongController(ILangRead langRead, IRepository<Songs> rs, IRepository<Users> ru, IRepository<Genres> rg, IWebHostEnvironment appEnvironment)
         {
+			//(string position, int genre = 0, int page = 1,
+			//SortState sortOrder = SortState.NameAsc)
+
             repoS = rs;
             repoU = ru;
             repoG = rg;
             _appEnvironment = appEnvironment;
-        }
+		
+			_langRead = langRead;
+		}
 
         // GET: Song
         //    
-        public async Task<IActionResult> Index()
-        {
+
+        //public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
+        //{
+
+        //    IQueryable<Songs>? songs = _context.songs.Include(x => x.genre);
+
+        //    ViewData["NameSort"] = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+        //    ViewData["SongSort"] = sortOrder == SortState.SongAsc ? SortState.SongDesc : SortState.SongAsc;
+          
+
+        //    songs = sortOrder switch
+        //    {
+        //        SortState.NameDesc => songs.OrderByDescending(s => s.singer),//singer
+        //        SortState.SongAsc => songs.OrderBy(s => s.name),//song name
+        //        SortState.SongDesc => songs.OrderByDescending(s => s.name),
+               
+        //        _ => songs.OrderBy(s => s.singer),
+        //    };
+            HttpContext.Session.SetString("path", Request.Path);
             var id = HttpContext.Session.GetString("Id");
             if (id != null)
             {
@@ -41,14 +73,42 @@ namespace MusicBox.Controllers
                 }
             }
 
-            var songs = await repoS.ToList();
-            return View(songs);
+            var s = await repoS.ToList();
+            return View(s);
+            //return View(await songs.ToListAsync());
         }
 
 
+
+        //     public async Task<IActionResult> Index()
+        //     {
+        //HttpContext.Session.SetString("path", Request.Path);
+        //var id = HttpContext.Session.GetString("Id");
+        //         if (id != null)
+        //         {
+        //             var user = await repoU.GetById(int.Parse(id));
+        //             if (user != null && user.Login == "admin")
+        //             {
+        //                 ViewBag.IsAdmin = true;
+        //             }
+        //         }
+
+        //         var songs = await repoS.ToList();
+        //         return View(songs);
+        //     }
+
+
+        //public ActionResult Index()
+        //{
+        //    HttpContext.Session.SetString("path", Request.Path);
+        //    return View(Songs);
+        //}
+
+
         public async Task<IActionResult> IndexAdmin()
+
         {
-            var model = await repoS.ToList();
+            IEnumerable<Songs> model = await repoS.ToList();
             return View(model);
         }
         // GET: Song/Details/5
@@ -71,7 +131,7 @@ namespace MusicBox.Controllers
         public bool SongExists(Songs song)
         {
 
-            // Проверяем, есть ли song в базе данных
+     
             return repoS.ToList().Result.Where(m => m.name == song.name &&
                 m.singer == song.singer).ToList().FirstOrDefault() != null;
         }
@@ -79,7 +139,8 @@ namespace MusicBox.Controllers
         // GET: Song/Create
         public async Task<IActionResult> Create()
         {
-            var genreList = await repoG.ToList();
+			HttpContext.Session.SetString("path", Request.Path);
+			var genreList = await repoG.ToList();
             ViewData["GenreId"] = new SelectList(genreList, "Id", "name");
 
             return View();
@@ -140,11 +201,7 @@ namespace MusicBox.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            //var song = await repoS.GetById(id); // Получаем песню по id
-            //if (song == null)
-            //{
-            //	return NotFound();
-            //}
+           
             var genreList = await repoG.ToList();
             ViewData["GenreId"] = new SelectList(genreList, "Id", "name");
 
@@ -156,7 +213,7 @@ namespace MusicBox.Controllers
 
             return View(song); // Передаем объект песни в представление
 
-            //return View(id);
+           
         }
         // POST: Song/Edit/5
 
@@ -252,8 +309,25 @@ namespace MusicBox.Controllers
             await repoS.Save();
             return RedirectToAction(nameof(Index));
         }
-    }
+		public ActionResult ChangeCulture(string lang)
+		{
+			string? returnUrl = HttpContext.Session.GetString("path") ?? "/Song/Index";
 
-  }
+			// Список культур
+			List<string> cultures = new List<string>() { "ru", "en", "uk", "es" };
+			if (!cultures.Contains(lang))
+			{
+				lang = "ru";
+			}
+
+			CookieOptions option = new CookieOptions();
+			option.Expires = DateTime.Now.AddDays(10); 
+			Response.Cookies.Append("lang", lang, option); 
+			return Redirect(returnUrl);
+		}
+
+	}
+
+}
 
 	

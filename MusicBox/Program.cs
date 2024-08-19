@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using MusicBox.Repository;
 using MusicBox.Models;
 
+using MusicBox.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,15 +28,21 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IRepository<Users>, UserRepository>();
 builder.Services.AddScoped<IRepository<Songs>, SongRepository>();
 builder.Services.AddScoped<IRepository<Genres>, GenreRepository>();
+
+
+builder.Services.AddScoped<ILangRead, ReadLangServices>();
+
 var app = builder.Build();
-
 app.UseAuthorization();
-
+//app.AddLocalization(options => options.ResourcesPath = "Resources");
 app.UseSession();
 app.UseStaticFiles();
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
 
 app.Run();
 
