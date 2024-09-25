@@ -2,7 +2,7 @@
 {
 	public class SortViewModel
 	{
-		public SortState NameSort { get; set; } 
+		public SortState SingerSort { get; set; } 
 		public SortState SongSort { get; set; }   
 		public SortState GenreSort { get; set; }    
 		
@@ -11,10 +11,10 @@
 		public SortViewModel(SortState sortOrder)
 		{
 			// значения по умолчанию
-			NameSort = SortState.NameAsc;
+			SingerSort = SortState.SingerAsc;
 			SongSort = SortState.SongAsc;
 			
-			NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
+			SingerSort = sortOrder == SortState.SingerAsc ? SortState.SingerDesc : SortState.SingerAsc;
 			SongSort = sortOrder == SortState.SongAsc ? SortState.SongDesc : SortState.SongAsc;
 			
 			Current = sortOrder;

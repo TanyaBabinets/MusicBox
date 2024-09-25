@@ -4,8 +4,8 @@
         {
             SongAsc,   
             SongDesc,   
-            NameAsc, 
-            NameDesc,    
+            SingerAsc, 
+            SingerDesc,    
         
         }
     

@@ -105,38 +105,48 @@ namespace MusicBox.Repository
             return user;
         }
 
-       
-        //public async Task<IActionResult> GetById(int? id)///Details???
-        //{
-        //    if (id == null || await repo.ToList() == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var user = await repo.GetById((int)id);
+		public IQueryable<Users> Query()
+		{
+			throw new NotImplementedException();
+		}
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(user);
-        //}
+		IQueryable<Users> IRepository<Users>.GetFilteredSongs(string singer, int genre, SortState sortOrder)
+		{
+			throw new NotImplementedException();
+		}
 
 
+		//public async Task<IActionResult> GetById(int? id)///Details???
+		//{
+		//    if (id == null || await repo.ToList() == null)
+		//    {
+		//        return NotFound();
+		//    }
+		//    var user = await repo.GetById((int)id);
 
-        //public async Task IRepository<Users>.Create(Users item)
-        //{
-        //    await _context.Users.AddAsync(item);
-        //}
+		//    if (user == null)
+		//    {
+		//        return NotFound();
+		//    }
+
+		//    return View(user);
+		//}
 
 
 
-        //public async Task IRepository<Users>.Delete(int id)
-        //{
-        //    Users? c = await _context.Users.FindAsync(id);
-        //    if (c != null)
-        //        _context.Messages.Remove(c);
-        //}
-    }
+		//public async Task IRepository<Users>.Create(Users item)
+		//{
+		//    await _context.Users.AddAsync(item);
+		//}
+
+
+
+		//public async Task IRepository<Users>.Delete(int id)
+		//{
+		//    Users? c = await _context.Users.FindAsync(id);
+		//    if (c != null)
+		//        _context.Messages.Remove(c);
+		//}
+	}
 }
 

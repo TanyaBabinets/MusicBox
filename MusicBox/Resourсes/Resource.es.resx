@@ -165,6 +165,9 @@
   <data name="file_mp3" xml:space="preserve">
     <value>formato de archivo mp3</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>filtrar</value>
+  </data>
   <data name="Genre" xml:space="preserve">
     <value>Género</value>
   </data>

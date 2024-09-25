@@ -24,39 +24,123 @@ body, html {
 
 body {
     background-color: gainsboro;
-    font-size: 16px;
+    font-size: 14px;
     font-family: 'Archivo Narrow', sans-serif;
    
 
 }
 .total {
-   
     display: flex;
- 
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    margin:20px;
 }
 .button-box {
 margin-left:10px;
 margin-top:10px;
 }
+
 .song-container {
     display: flex;
-    flex-direction:row;
-    width:800px;
-    margin-left:-200px;
+    flex-direction: row;
     margin-bottom: 20px;
-    
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.song-container1 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.login {
+    margin:20px;
+}
+.left {
+    margin-left:-70px;
+    margin-right:20px;
+    text-align: center;
+    flex: 0 0 30%;    
+    padding: 20px;
+    box-sizing: border-box;
+}
+.row-items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.left {
-    margin-left: 10px;
-    width: 260px;
+.row-items > div {
+        flex: 1;
+        padding-right: 20px; 
+    }
+#search {
+margin-top:50px;
+align-items:center;
+border:4px double grey;
+border-radius:10px;
+padding-bottom:20px;
+}
+.sort {
+    margin-top: 40px;
+    padding-top:30px;
+    border: 4px double grey;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    font-size:22px;
     text-align:center;
 }
+#singer {
+    width: 200px;
+    height: 40px;
+}
+#genre {
+    width: 200px;
+    height: 40px;
+}
+.link-style {
+    font-size: 30px;
+  font-style:italic;
+    text-align: center;
+    margin: 10px;
+    color: purple;
 
+}
+    .link-style:hover {
+        color: darkgrey; 
+    }
+.link-style1 {
+    font-size: 24px;   
+    margin: 10px;
+    color: purple;
+}
+
+    .link-style1:hover {
+        color: darkgrey;
+    }
+.pages a {
+    margin: 0 20px; 
+}
+.pages {
+    display: flex; 
+    justify-content: center; 
+    position: fixed;
+    bottom: 20px; 
+    left: 0;
+    right: 0;
+    margin: 0 auto; 
+    padding: 10px;
+    background-color: #f8f8f8;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
 .picture-container {
     margin-left: 10px;
-    width: 160px;
-    height: 200px;
+    width: 100px;
+    height: 160px;
     
 }
 
@@ -97,12 +181,12 @@ h1 {
 h3 {
     color: black;
 }
-.main {
+/*.main {
     margin-left: 300px;
     width: 600px;
     display: flex;
     flex-direction: column;
-}
+}*/
 #audio {
     margin-left: 300px;
     width: 600px;
@@ -175,15 +259,13 @@ ul {
     height: 40px;
     color: white;
     border: 1px solid grey;
-    border-radius: 0.5%;
+    border-radius: 10px;
     background-color: purple;
     text-align: center;
     text-decoration: none;
     box-shadow: 10px 10px 10px grey;
 }
-.grey {
-color:purple;
-}
+
 .buttons {
     margin-top: 5px;
     margin-bottom: 5px;

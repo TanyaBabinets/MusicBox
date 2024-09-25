@@ -19,9 +19,9 @@ namespace MusicBox.Controllers
 
 		readonly ILangRead _langRead;
 
-		public AccountController(SongContext context, ILangRead langRead, IRepository<Users> r)
+		public AccountController( ILangRead langRead, IRepository<Users> r)
 		{
-			_context = context;
+		
 			_langRead = langRead;
 			repo = r;
 		}

@@ -90,7 +90,41 @@ namespace MusicBox.Repository
         {
             throw new NotImplementedException();
         }
-        
-    }
+		public IQueryable<Songs> GetFilteredSongs(string singer, int genre, SortState sortOrder)
+		{
+			var item =_context.songs.Include(s => s.genre).AsQueryable();
+
+			// Фильтрация по исполнителю
+			if (!string.IsNullOrEmpty(singer))
+			{
+				item = item.Where(s => s.singer.ToLower().Contains(singer.ToLower()));
+			}
+
+			// Фильтрация по жанру
+			if (genre != 0)
+			{
+				item = item.Where(s => s.GenreId == genre);
+			}
+
+            // Сортировка
+           
+            item = sortOrder switch
+            {
+                SortState.SingerDesc => item.OrderByDescending(s => s.singer),//singer
+			
+				SortState.SongAsc => item.OrderBy(s => s.name),//song name
+                SortState.SongDesc => item.OrderByDescending(s => s.name),
+
+                _ => item.OrderBy(s => s.singer),
+            };
+            return item;
+            //return await item.ToListAsync();
+		}
+
+		public IQueryable<Songs> Query()
+		{
+			return _context.songs; 
+		}
+	}
 }
 

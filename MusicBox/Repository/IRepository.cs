@@ -12,9 +12,10 @@ namespace MusicBox.Repository
         void Update(T item);
         Task Delete(int id);
         Task Save();
-     
-       // void Update(Task<Users> user);
-    }
+		IQueryable<T> GetFilteredSongs(string singer, int genre, SortState sortOrder);
+		// void Update(Task<Users> user);
+		IQueryable<T> Query();
+	}
 }
 //Task<List<T>> ToListAsync();
 //Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);

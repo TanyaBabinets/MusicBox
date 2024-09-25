@@ -165,6 +165,9 @@
   <data name="file_mp3" xml:space="preserve">
     <value>Загрузите файл в формате мр3</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Искать</value>
+  </data>
   <data name="Genre" xml:space="preserve">
     <value>Жанр</value>
   </data>

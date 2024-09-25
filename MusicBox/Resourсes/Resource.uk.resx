@@ -165,6 +165,9 @@
   <data name="file_mp3" xml:space="preserve">
     <value>потрібен лише формат мр3</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Вибрати</value>
+  </data>
   <data name="Genre" xml:space="preserve">
     <value>Жанр</value>
   </data>
@@ -214,7 +217,7 @@
     <value>постер</value>
   </data>
   <data name="Please" xml:space="preserve">
-    <value>Щоба завантажити пісню будь ласка</value>
+    <value>Щоб завантажити пісню будь ласка</value>
   </data>
   <data name="reg" xml:space="preserve">
     <value>зареєструйтесь</value>

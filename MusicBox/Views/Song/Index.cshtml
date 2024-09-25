@@ -1,4 +1,9 @@
-﻿@model IEnumerable<MusicBox.Models.Songs>
+﻿@* @model IEnumerable<MusicBox.Models.Songs> *@
+
+	@model MusicBox.Models.IndexViewModel
+
+
+
 @{
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,35 +13,35 @@
 
 <section class="total">
 
-<section id="login">
-	 <div class="left">
-				
+	<section id="login">
+		<div class="left">
 
-@if (Model != null)
-{
-	@if (Context.Session.GetString("Id") != null)
 
-	{
-		<div>
-			<div class="button">
-				<a asp-controller="Song" asp-action="Create" id="buttons" style="background:purple" margin-right">Добавить песню</a>
-			</div>
-			</div>
-	}
-	else
+			@if (Model != null)
+			{
+				@if (Context.Session.GetString("Id") != null)
 
-	{
+				{
+					<div>
+						<div class="button">
+							<a asp-controller="Song" asp-action="Create" id="buttons" style="background:purple" margin-right">Добавить песню</a>
+						</div>
+					</div>
+				}
+				else
+
+				{
 					<h4>
 						@Resources.Resource.Please
-			</h4>
+					</h4>
 					<h3>
 						<a asp-controller="Account"
-						   style="font-size:26px" margin="10px" asp-action="Login" class="grey" style="color:grey font-size:42px text-align:center">@Resources.Resource.log_in</a>
+						   asp-action="Login" class="link-style">@Resources.Resource.log_in</a>
 					</h3> <h4>@Resources.Resource.or</h4> <h3>
-						<a asp-controller="Account" style="font-size:42p color:grey text-align:center" class="grey" asp-action="Register">@Resources.Resource.reg</a>
-		</h3>
-	}
-}
+						<a asp-controller="Account" asp-action="Register" class="link-style">@Resources.Resource.reg</a>
+					</h3>
+				}
+			}
 
 
 			@if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
@@ -48,94 +53,130 @@
 					<a asp-controller="Genres" id="buttons" style="background:purple" asp-action="Index">ЖАНРЫ</a>
 				</div>
 			}
-</div>
+			<form method="get">
+				<div id="search" style="text-align: center;">
+					<h4>Поиск</h4>
+				
+					<label style="font-size: 24px">@Resources.Resource.Singer</label></br>
+					<input id="singer" name="singer" value="@Model.FilterViewModel.SelectedSinger" /></br>
 
-</section>
+					<label style="font-size: 24px">@Resources.Resource.Genre: </label></br>
+					<select name="genre" id="genre" asp-items="Model.FilterViewModel.Genres"></select></br>
+					<input type="submit" id="buttons" style="margin-left:60px;" value="@Resources.Resource.Filter" />
+				</div>
+			</form>
+			
 
+			<ul class="sort">
+				<h4>Сортировка</h4>
+				<li>
+					<a asp-action="Index" class="link-style1"
+					   asp-route-sortOrder="@(Model.SortViewModel.SingerSort)"
+					   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
+					   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)">По исполнителю</a>
+				</li>
+				<li>
+					<a asp-action="Index" class="link-style1" asp-route-sortOrder="@(Model.SortViewModel.SongSort)"
+					   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
+					   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)">По названию песни</a>
+				</li>
+			@* 	<li>
 
- <section class="main">
+					<a asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.GenreSort)"
+					   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
+					   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)">Жанр</a>
+				</li> *@
 
-		<thead>
-			<tr>
-				<th>
-					<a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">
-						Singer
-					</a>
-				</th>
-				<th>
-					<a asp-action="Index" asp-route-sortOrder="@ViewBag.SongSort">
-						Song
-					</a>
-				</th>
-			</tr>
-		</thead>
-		
-
-
-@foreach (var item in Model)
-
-	{
-		<div class="song-container">
-		<div class="picture-container">
-			<a asp-action="Detailes" enctype="multipart/form-data" asp-route-id="@item.Id">
-				<img class="picture" src="@Html.DisplayFor(modelItem => item.pic)">
-			</a>
+				
+			</ul>
 		</div>
-			<div class="song-details">
-				<ul>
-					<li>
-						<a asp-action="Details" enctype="multipart/form-data" asp-route-id="@item.Id" style="color:black">
-							<h4>@Html.DisplayFor(modelItem => item.name)</h4>
-						</a>
-					</li>
-					<li>
-						<a asp-action="" asp-route-id="@item.Id" style="color:black">
-							<h4>@Html.DisplayFor(modelItem => item.singer)</h4>
-						</a>
-					</li>
-					<li>
-						<div class="audio">
-							<audio controls src="@Html.DisplayFor(modelItem => item.file)"></audio>
-							
-						</div>
-					</li>
-					<li>
-						<div>
 
-								<p>@Resources.Resource.Runtime: @Html.DisplayFor(modelItem => item.runtime)</p>
-						</div>
-					</li>
+	</section>
+
+
+	<div class="song-container1">
+		@foreach (var item in Model.Songs)
+
+		{
+			<div class="song-container">
+				<div class="picture-container">
+					<a asp-action="Detailes" enctype="multipart/form-data" asp-route-id="@item.Id">
+						<img class="picture" src="@Html.DisplayFor(modelItem => item.pic)">
+					</a>
+				</div>
+				<div class="song-details">
+					<ul>
 						<li>
-							<div>
+							<a asp-action="Details" enctype="multipart/form-data" asp-route-id="@item.Id" style="color:black">
+								<h4>@Html.DisplayFor(modelItem => item.name)</h4>
+							</a>
+						</li>
+						<li>
+							<a asp-action="" asp-route-id="@item.Id" style="color:black">
+								<h4>@Html.DisplayFor(modelItem => item.singer)</h4>
+							</a>
+						</li>
+						<li>
+							<div class="audio">
+								<audio controls src="@Html.DisplayFor(modelItem => item.file)"></audio>
 
+							</div>
+						</li>
+						<li class="row-items">
+							<div>
+								<p>@Resources.Resource.Runtime: @Html.DisplayFor(modelItem => item.runtime)</p>
+							</div>
+							<div style="font-weight:bold">
 								<p>@Resources.Resource.Genre: @Html.DisplayFor(modelItem => item.genre.name)</p>
 							</div>
 						</li>
 
+					</ul>
 
-				</ul>
-				
-			
-			</div>
+
+				</div>
 				<div class="button-box">
 					<div id="buttons">
 
 						<a asp-action="Details" asp-route-id="@item.Id">@Resources.Resource.Detailes</a>
 					</div>
 				</div>
-		</div>
-		<hr />
-	}
-	
+			</div>
+
+		}
+
 </section>
 
-		</div>			
-	<hr />
-	<hr />
+		</div>
+
 </section>
-</section>
-<hr />
-			
+</div>
+
+<div class="pages">
+	@if (Model.PageViewModel.HasPreviousPage)
+	{
+		<a asp-action="Index"
+		   asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+		   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
+		   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
+		   asp-route-sortorder="@(Model.SortViewModel.Current)"
+		   class="glyphicon glyphicon-chevron-left">
+			Назад  
+		</a>
+	}
+	<span> Страница @Model.PageViewModel.PageNumber из @Model.PageViewModel.TotalPages </span>
+	@if (Model.PageViewModel.HasNextPage)
+	{
+		<a asp-action="Index"
+		   asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+		   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
+		   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
+		   asp-route-sortorder="@(Model.SortViewModel.Current)"
+		   class="glyphicon glyphicon-chevron-right">
+			  Вперед
+		</a>
+	}
+</div>
 
 
 

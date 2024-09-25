@@ -9,6 +9,7 @@ using MusicBox.Filters;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MusicBox.Services;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
 namespace MusicBox.Controllers
 {
@@ -19,50 +20,44 @@ namespace MusicBox.Controllers
         private readonly IRepository<Users> repoU;
         private readonly IRepository<Genres> repoG;
         IWebHostEnvironment _appEnvironment;
-		
-
 		readonly ILangRead _langRead;
 
-		//public SongController(SongContext context, ILangRead langRead)
-		//{
-		//	_context = context;
-		//	_langRead = langRead;
-		//}
-
-		public SongController(ILangRead langRead, IRepository<Songs> rs, IRepository<Users> ru, IRepository<Genres> rg, IWebHostEnvironment appEnvironment)
+        public SongController(ILangRead langRead, IRepository<Songs> rs, IRepository<Users> ru, IRepository<Genres> rg, IWebHostEnvironment appEnvironment)
         {
-			//(string position, int genre = 0, int page = 1,
-			//SortState sortOrder = SortState.NameAsc)
-
+           
             repoS = rs;
             repoU = ru;
             repoG = rg;
-            _appEnvironment = appEnvironment;
-		
+            _appEnvironment = appEnvironment;		
 			_langRead = langRead;
 		}
 
         // GET: Song
         //    
 
-        //public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
-        //{
+        public async Task<IActionResult> Index(string singer, int genre = 0, int page = 1, SortState sortOrder = SortState.SingerAsc)
+		{
+			const int pageSize = 4;
 
-        //    IQueryable<Songs>? songs = _context.songs.Include(x => x.genre);
+			//фильтрация
+			IQueryable<Songs> songs = repoS.GetFilteredSongs(singer, genre, sortOrder);
+			var count = await songs.CountAsync();
+			
+			var items = await songs.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+			var genres = await repoG.ToList();
+			//// формируем модель представления
+			IndexViewModel viewModel = new IndexViewModel(
+				items,
+			new PageViewModel(count, page, pageSize),
+			new FilterViewModel(genres.ToList(), genre, singer),
+			new SortViewModel(sortOrder)
+			);
 
-        //    ViewData["NameSort"] = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
-        //    ViewData["SongSort"] = sortOrder == SortState.SongAsc ? SortState.SongDesc : SortState.SongAsc;
-          
+			ViewData["SingerSort"] = sortOrder == SortState.SingerAsc ? SortState.SingerDesc : SortState.SingerAsc;
+			ViewData["SongSort"] = sortOrder == SortState.SongAsc ? SortState.SongDesc : SortState.SongAsc;
 
-        //    songs = sortOrder switch
-        //    {
-        //        SortState.NameDesc => songs.OrderByDescending(s => s.singer),//singer
-        //        SortState.SongAsc => songs.OrderBy(s => s.name),//song name
-        //        SortState.SongDesc => songs.OrderByDescending(s => s.name),
-               
-        //        _ => songs.OrderBy(s => s.singer),
-        //    };
-            HttpContext.Session.SetString("path", Request.Path);
+
+			HttpContext.Session.SetString("path", Request.Path);
             var id = HttpContext.Session.GetString("Id");
             if (id != null)
             {
@@ -72,37 +67,12 @@ namespace MusicBox.Controllers
                     ViewBag.IsAdmin = true;
                 }
             }
+			return View(viewModel);
+			//var s = await repoS.ToList();
+			//return View(songs);
+			//return View(await songs.ToListAsync());
+		}
 
-            var s = await repoS.ToList();
-            return View(s);
-            //return View(await songs.ToListAsync());
-        }
-
-
-
-        //     public async Task<IActionResult> Index()
-        //     {
-        //HttpContext.Session.SetString("path", Request.Path);
-        //var id = HttpContext.Session.GetString("Id");
-        //         if (id != null)
-        //         {
-        //             var user = await repoU.GetById(int.Parse(id));
-        //             if (user != null && user.Login == "admin")
-        //             {
-        //                 ViewBag.IsAdmin = true;
-        //             }
-        //         }
-
-        //         var songs = await repoS.ToList();
-        //         return View(songs);
-        //     }
-
-
-        //public ActionResult Index()
-        //{
-        //    HttpContext.Session.SetString("path", Request.Path);
-        //    return View(Songs);
-        //}
 
 
         public async Task<IActionResult> IndexAdmin()
@@ -128,12 +98,12 @@ namespace MusicBox.Controllers
 
             return View(song);
         }
-        public bool SongExists(Songs song)
+        public async Task<bool> SongExistsAsync(Songs song)
         {
-
-     
-            return repoS.ToList().Result.Where(m => m.name == song.name &&
-                m.singer == song.singer).ToList().FirstOrDefault() != null;
+			
+			return await repoS.Query().AnyAsync(m => m.name == song.name && m.singer == song.singer);
+			//return repoS.ToList().Result.Where(m => m.name == song.name &&
+   //             m.singer == song.singer).ToList().FirstOrDefault() != null;
         }
 
         // GET: Song/Create
@@ -156,7 +126,7 @@ namespace MusicBox.Controllers
             if (ModelState.IsValid)
             {
 
-                if (SongExists(s))
+                if (await SongExistsAsync(s))
                 {
 
                     return View("~/Views/Song/Error.cshtml");

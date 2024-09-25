@@ -75,6 +75,16 @@ namespace MusicBox.Repository
         {
             throw new NotImplementedException();
         }
-    }
+
+		public IQueryable<Genres> Query()
+		{
+			throw new NotImplementedException();
+		}
+
+		IQueryable<Genres> IRepository<Genres>.GetFilteredSongs(string singer, int genre, SortState sortOrder)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
 

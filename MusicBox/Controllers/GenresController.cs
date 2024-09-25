@@ -15,7 +15,8 @@ namespace MusicBox.Controllers
 	[Culture]
 	public class GenresController : Controller
     {
-        private readonly IRepository<Songs> repoS;
+		private readonly SongContext _context;
+		private readonly IRepository<Songs> repoS;
         private readonly IRepository<Users> repoU;
         private readonly IRepository<Genres> repoG;
         IWebHostEnvironment _appEnvironment;
@@ -27,16 +28,7 @@ namespace MusicBox.Controllers
             _appEnvironment = appEnvironment;
         }
 
-        private readonly SongContext _context;
-
-		readonly ILangRead _langRead;
-
-		public GenresController(SongContext context, ILangRead langRead)
-		{
-			_context = context;
-			_langRead = langRead;
-		}
-
+        
 
 		public async Task<IActionResult> Index()
         {
