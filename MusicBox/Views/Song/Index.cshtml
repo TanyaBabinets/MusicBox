@@ -63,6 +63,7 @@
 					<label style="font-size: 24px">@Resources.Resource.Genre: </label></br>
 					<select name="genre" id="genre" asp-items="Model.FilterViewModel.Genres"></select></br>
 					<input type="submit" id="buttons" style="margin-left:60px;" value="@Resources.Resource.Filter" />
+					<button type="button" id="clearButton">Сброс</button>
 				</div>
 			</form>
 			
@@ -93,8 +94,14 @@
 
 	</section>
 
-
+	
 	<div class="song-container1">
+		<div class="page-buttons">
+			<page-link page-model="Model.PageViewModel" page-action="Index"
+					   page-url-position="@(Model.FilterViewModel.SelectedSinger)"
+					   page-url-team="@(Model.FilterViewModel.SelectedGenre)"
+					   page-url-sortorder="@(Model.SortViewModel.Current)"></page-link>
+		</div>
 		@foreach (var item in Model.Songs)
 
 		{
@@ -160,7 +167,7 @@
 		   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
 		   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
 		   asp-route-sortorder="@(Model.SortViewModel.Current)"
-		   class="glyphicon glyphicon-chevron-left">
+		   class="glyphicon glyphicon-chevron-left pg">
 			Назад  
 		</a>
 	}
@@ -172,14 +179,19 @@
 		   asp-route-singer="@(Model.FilterViewModel.SelectedSinger)"
 		   asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
 		   asp-route-sortorder="@(Model.SortViewModel.Current)"
-		   class="glyphicon glyphicon-chevron-right">
+		   class="glyphicon glyphicon-chevron-right pg">
 			  Вперед
 		</a>
 	}
 </div>
-
-
-
+<script>
+	//очистка полей  фильтров
+	document.getElementById('clearButton').addEventListener('click', function() {
+		document.getElementById('singer').value = '';
+		document.getElementById('genre').selectedIndex = 0;
+		document.querySelector('form').submit();
+	});
+</script>
 
 
 
